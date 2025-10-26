@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 		template: "%s | MangoWC",
 	},
 	description:
-		"MangoWC is a lightweight, high-performance Wayland compositor built on dwl, offering speed, flexibility, and a modern, customizable desktop experience.",
+		"MangoWC is a lightweight, high-performance Wayland compositor built on dwl, designed for speed, flexibility, and a modern, customizable desktop experience.",
 	keywords: [
 		"wayland compositor",
 		"window manager",
