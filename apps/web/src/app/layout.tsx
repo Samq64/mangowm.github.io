@@ -6,133 +6,129 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../index.css";
 import Providers from "@/components/providers";
 
-// biome-ignore lint/correctness/noUnusedVariables: fonts are used in CSS variables
+const SITE_TITLE = "MangoWC - Lightweight Wayland Compositor";
+const SITE_DESCRIPTION =
+  "MangoWC is a lightweight, high-performance Wayland compositor built on dwl, designed for speed, flexibility, and a modern, customizable desktop experience.";
+const SITE_URL = "https://mangowc.vercel.app";
+const SITE_OG_IMAGE = "/image.png";
+const IMAGE_VERSION = "1";
+const TWITTER_CREATOR = "";
+
 const geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geistMono = Geist_Mono({ subsets: ["latin"] });
 
 const jsonLd = {
-	"@context": "https://schema.org",
-	"@type": "SoftwareApplication",
-	name: "MangoWC",
-	alternateName: "Mango Window Compositor",
-	description:
-		"MangoWC is a lightweight, high-performance Wayland compositor built on dwl, designed for speed, flexibility, and a modern, customizable desktop experience.",
-	applicationCategory: "DesktopEnhancementApplication",
-	operatingSystem: "Linux",
-	programmingLanguage: "C",
-	softwareVersion: "latest",
-	url: "https://mangowc.vercel.app",
-	codeRepository: "https://github.com/DreamMaoMao/mangowc",
-	downloadUrl: "https://github.com/DreamMaoMao/mangowc/releases",
-	license: "https://github.com/DreamMaoMao/mangowc/blob/main/LICENSE",
-	author: {
-		"@type": "Person",
-		name: "DreamMaoMao",
-		url: "https://github.com/DreamMaoMao",
-	},
-	sameAs: [
-		"https://github.com/DreamMaoMao/mangowc",
-		"https://mangowc.vercel.app",
-	],
-	keywords: [
-		"wayland compositor",
-		"dwl",
-		"linux window manager",
-		"lightweight wm",
-		"tiling compositor",
-	],
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "MangoWC",
+  alternateName: "Mango Window Compositor",
+  description: SITE_DESCRIPTION,
+  applicationCategory: "DesktopEnhancementApplication",
+  operatingSystem: "Linux",
+  programmingLanguage: "C",
+  softwareVersion: "latest",
+  url: SITE_URL,
+  codeRepository: "https://github.com/DreamMaoMao/mangowc",
+  downloadUrl: "https://github.com/DreamMaoMao/mangowc/releases",
+  license: "https://github.com/DreamMaoMao/mangowc/blob/main/LICENSE",
+  author: {
+    "@type": "Person",
+    name: "DreamMaoMao",
+    url: "https://github.com/DreamMaoMao",
+  },
+  sameAs: [
+    "https://github.com/DreamMaoMao/mangowc",
+    SITE_URL,
+  ],
+  keywords: [
+    "wayland compositor",
+    "dwl",
+    "linux window manager",
+    "lightweight wm",
+    "tiling compositor",
+  ],
 };
 
 export const metadata: Metadata = {
-	metadataBase: new URL("https://mangowc.vercel.app"),
-	title: {
-		default: "MangoWC - Lightweight Wayland Compositor",
-		template: "%s | MangoWC",
-	},
-	description:
-		"MangoWC is a lightweight, high-performance Wayland compositor built on dwl, designed for speed, flexibility, and a modern, customizable desktop experience.",
-	keywords: [
-		"wayland compositor",
-		"window manager",
-		"dwl",
-		"linux",
-		"lightweight wm",
-	],
-	openGraph: {
-		title: "MangoWC - Lightweight Wayland Compositor",
-		description:
-			"Fast, flexible, and minimal — MangoWC is a modern Wayland compositor built on dwl for Linux power users.",
-		url: "https://mangowc.vercel.app",
-		siteName: "MangoWC",
-		images: [
-			{
-				url: "/logo-1200x630.png",
-				width: 1200,
-				height: 630,
-				alt: "MangoWC Wayland Compositor",
-			},
-		],
-		locale: "en_US",
-		type: "website",
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "MangoWC - Lightweight Wayland Compositor",
-		description:
-			"MangoWC is a fast, customizable Wayland compositor for Linux — smooth animations, flexible layouts, and advanced window control.",
-		images: ["/logo-1200x630.png"],
-		creator: "@DreamMaoMao",
-	},
-	icons: {
-		icon: "/favicon.ico",
-		apple: "/logo-192x192.png",
-	},
-	robots: {
-		index: true,
-		follow: true,
-		googleBot: {
-			index: true,
-			follow: true,
-			"max-image-preview": "large",
-			"max-snippet": -1,
-			"max-video-preview": -1,
-		},
-	},
-	alternates: { canonical: "https://mangowc.vercel.app" },
-	category: "Software",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s | MangoWC",
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "wayland compositor",
+    "window manager",
+    "dwl",
+    "linux",
+    "lightweight wm",
+  ],
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "MangoWC",
+    images: [
+      {
+        url: `${SITE_OG_IMAGE}?v=${IMAGE_VERSION}`,
+        width: 1200,
+        height: 630,
+        alt: "MangoWC Wayland Compositor",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [`${SITE_OG_IMAGE}?v=${IMAGE_VERSION}`],
+    creator: TWITTER_CREATOR,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo-192x192.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  alternates: { canonical: SITE_URL },
+  category: "Software",
 };
 
-/**
- * ✅ Clean, accessible layout with Analytics + Providers
- * - SEO friendly
- * - JSON-LD injection
- */
 export default function RootLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className="flex min-h-screen flex-col font-sans antialiased">
-				<a
-					href="#main"
-					className="sr-only z-50 rounded bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:absolute focus:top-4 focus:left-4"
-				>
-					Skip to main content
-				</a>
-				<RootProvider>
-					<Providers>{children}</Providers>
-				</RootProvider>
-				<Analytics />
-				<SpeedInsights />
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(jsonLd),
-					}}
-				/>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="en" suppressHydrationWarning className={`${geist.className} ${geistMono.className}`}>
+      <body className="flex min-h-screen flex-col font-sans antialiased">
+        <a
+          href="#main"
+          className="sr-only z-50 rounded bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:absolute focus:top-4 focus:left-4"
+        >
+          Skip to main content
+        </a>
+        <RootProvider>
+          <Providers>{children}</Providers>
+        </RootProvider>
+        <Analytics />
+        <SpeedInsights />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </body>
+    </html>
+  );
 }
