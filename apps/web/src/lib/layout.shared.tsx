@@ -4,7 +4,7 @@ import Image from "next/image";
 const logo = (
 	<Image
 		alt="MangoWC"
-		src="/logo-32x32.png"
+		src="/logo-32x32.webp"
 		width={32}
 		height={32}
 		className="size-5"

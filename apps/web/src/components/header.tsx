@@ -56,7 +56,7 @@ export function Header() {
 				<div className="flex items-center gap-8">
 					<Link href="/" className="group flex items-center gap-2">
 						<Image
-							src="/logo-32x32.png"
+							src="/logo-32x32.webp"
 							alt="MangoWC Logo"
 							width={32}
 							height={32}

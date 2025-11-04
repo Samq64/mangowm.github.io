@@ -9,7 +9,7 @@ export function Footer() {
 					<div>
 						<div className="mb-4 flex items-center gap-2">
 							<Image
-								src="/logo-32x32.png"
+								src="/logo-32x32.webp"
 								alt="MangoWC Logo"
 								width={32}
 								height={32}
