@@ -22,10 +22,6 @@ cd mangowc-web
 bun install
 ```
 
-### 3. (Optional) Set up environment variables
-
-If needed, create a `.env` file inside the `apps/web` directory and adjust values based on `.env.example`.
-
 ---
 
 ## 🚀 Development
@@ -70,6 +66,6 @@ mangowc-web/
 
 ## 🌐 Links
 
-* **Live Site:** [https://mangowc.vercel.app](https://mangowc.vercel.app)
 * **Core Project:** [DreamMaoMao/mangowc](https://github.com/DreamMaoMao/mangowc)
-* **Documentation:** [https://mangowc.vercel.app/docs](https://mangowc.vercel.app/docs)
+* **Project Wiki:** [DreamMaoMao/mangowc](https://github.com/DreamMaoMao/mangowc/wiki)
+* **Live Site:** [https://mangowc.vercel.app](https://mangowc.vercel.app)
