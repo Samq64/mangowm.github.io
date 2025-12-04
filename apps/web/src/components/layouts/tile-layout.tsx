@@ -9,10 +9,14 @@ import {
 	TOTAL_DURATION,
 } from "./constants";
 
+interface TileLayoutProps {
+	orientation: "horizontal" | "vertical";
+}
+
 // ============================================================================
 // 1. TILING LAYOUT
 // ============================================================================
-export function TileLayout() {
+export function TileLayout({ orientation }: TileLayoutProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const r1 = useRef<HTMLDivElement>(null);
 	const r2 = useRef<HTMLDivElement>(null);
@@ -25,7 +29,6 @@ export function TileLayout() {
 	useEffect(() => {
 		[r1, r2, r3].forEach((ref) => {
 			if (ref.current) {
-				// Optimization: Unified transition string
 				ref.current.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
 			}
 		});
@@ -39,10 +42,17 @@ export function TileLayout() {
 			const height = containerRef.current.clientHeight;
 			const gap = 16;
 
-			const halfW = (width - gap) / 2;
-			const halfH = (height - gap) / 2;
-			const rightX = halfW + gap;
-			const bottomY = halfH + gap;
+			// Horizontal Calculations (Master Left, Stack Right)
+			const h_halfW = (width - gap) / 2;
+			const h_halfH = (height - gap) / 2;
+			const h_rightX = h_halfW + gap;
+			const h_bottomY = h_halfH + gap;
+
+			// Vertical Calculations (Master Top, Stack Bottom)
+			const v_halfW = (width - gap) / 2;
+			const v_halfH = (height - gap) / 2;
+			const v_rightX = v_halfW + gap;
+			const v_bottomY = v_halfH + gap;
 
 			const set = (
 				el: HTMLDivElement | null,
@@ -61,57 +71,113 @@ export function TileLayout() {
 
 				el.style.opacity = visible ? "1" : "0";
 				el.style.transform = visible ? "scale(1)" : "scale(0.9)";
-
-				// Optimization: Use pre-defined classes to reduce string interpolation overhead
 				el.className = cn(CARD_BASE, active ? CARD_ACTIVE : CARD_INACTIVE);
 			};
 
+			const isVert = orientation === "vertical";
+
 			// Layout Phases
 			if (phase === 0) {
-				// Init
+				// Init: Full screen master
 				set(r1.current, 0, 0, width, height, false, false);
-				set(r2.current, rightX, 0, halfW, height, false, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				// Pre-position others
+				if (isVert) {
+					set(r2.current, 0, v_bottomY, width, v_halfH, false, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					set(r2.current, h_rightX, 0, h_halfW, height, false, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			} else if (phase === 1) {
-				// Spawn 1
+				// Spawn 1 (Master)
 				set(r1.current, 0, 0, width, height, true, true);
-				set(r2.current, rightX, 0, halfW, height, false, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				if (isVert) {
+					set(r2.current, 0, v_bottomY, width, v_halfH, false, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					set(r2.current, h_rightX, 0, h_halfW, height, false, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			} else if (phase === 2) {
-				// Spawn 2
-				set(r1.current, 0, 0, halfW, height, true, false);
-				set(r2.current, rightX, 0, halfW, height, true, true);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				// Spawn 2 (Split)
+				if (isVert) {
+					// Master Top, Stack Bottom (Full Width)
+					set(r1.current, 0, 0, width, v_halfH, true, false);
+					set(r2.current, 0, v_bottomY, width, v_halfH, true, true);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					// Master Left, Stack Right (Full Height)
+					set(r1.current, 0, 0, h_halfW, height, true, false);
+					set(r2.current, h_rightX, 0, h_halfW, height, true, true);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			} else if (phase === 3) {
-				// Spawn 3
-				set(r1.current, 0, 0, halfW, height, true, false);
-				set(r2.current, rightX, 0, halfW, halfH, true, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, true, true);
+				// Spawn 3 (Split Stack)
+				if (isVert) {
+					// Master Top, Stack Bottom Split (Left/Right)
+					set(r1.current, 0, 0, width, v_halfH, true, false);
+					set(r2.current, 0, v_bottomY, v_halfW, v_halfH, true, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, true, true);
+				} else {
+					// Master Left, Stack Right Split (Top/Bottom)
+					set(r1.current, 0, 0, h_halfW, height, true, false);
+					set(r2.current, h_rightX, 0, h_halfW, h_halfH, true, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, true, true);
+				}
 			} else if (phase === 4) {
 				// Swap
-				set(r1.current, rightX, bottomY, halfW, halfH, true, false);
-				set(r2.current, rightX, 0, halfW, halfH, true, false);
-				set(r3.current, 0, 0, halfW, height, true, true);
+				if (isVert) {
+					set(r1.current, v_rightX, v_bottomY, v_halfW, v_halfH, true, false);
+					set(r2.current, 0, v_bottomY, v_halfW, v_halfH, true, false);
+					set(r3.current, 0, 0, width, v_halfH, true, true);
+				} else {
+					set(r1.current, h_rightX, h_bottomY, h_halfW, h_halfH, true, false);
+					set(r2.current, h_rightX, 0, h_halfW, h_halfH, true, false);
+					set(r3.current, 0, 0, h_halfW, height, true, true);
+				}
 			} else if (phase === 5) {
-				// Re-Swap
-				set(r1.current, 0, 0, halfW, height, true, true);
-				set(r2.current, rightX, 0, halfW, halfH, true, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, true, false);
+				// Re-Swap (Back to normal)
+				if (isVert) {
+					set(r1.current, 0, 0, width, v_halfH, true, true);
+					set(r2.current, 0, v_bottomY, v_halfW, v_halfH, true, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, true, false);
+				} else {
+					set(r1.current, 0, 0, h_halfW, height, true, true);
+					set(r2.current, h_rightX, 0, h_halfW, h_halfH, true, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, true, false);
+				}
 			} else if (phase === 6) {
 				// Despawn 3
-				set(r1.current, 0, 0, halfW, height, true, true);
-				set(r2.current, rightX, 0, halfW, height, true, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				if (isVert) {
+					set(r1.current, 0, 0, width, v_halfH, true, true);
+					set(r2.current, 0, v_bottomY, width, v_halfH, true, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					set(r1.current, 0, 0, h_halfW, height, true, true);
+					set(r2.current, h_rightX, 0, h_halfW, height, true, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			} else if (phase === 7) {
 				// Despawn 2
-				set(r1.current, 0, 0, width, height, true, true);
-				set(r2.current, rightX, 0, halfW, height, false, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				if (isVert) {
+					set(r1.current, 0, 0, width, height, true, true);
+					set(r2.current, 0, v_bottomY, width, v_halfH, false, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					set(r1.current, 0, 0, width, height, true, true);
+					set(r2.current, h_rightX, 0, h_halfW, height, false, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			} else if (phase === 8) {
 				// Despawn 1
 				set(r1.current, 0, 0, width, height, false, false);
-				set(r2.current, rightX, 0, halfW, height, false, false);
-				set(r3.current, rightX, bottomY, halfW, halfH, false, false);
+				if (isVert) {
+					set(r2.current, 0, v_bottomY, width, v_halfH, false, false);
+					set(r3.current, v_rightX, v_bottomY, v_halfW, v_halfH, false, false);
+				} else {
+					set(r2.current, h_rightX, 0, h_halfW, height, false, false);
+					set(r3.current, h_rightX, h_bottomY, h_halfW, h_halfH, false, false);
+				}
 			}
 		};
 
@@ -119,7 +185,7 @@ export function TileLayout() {
 		const ro = new ResizeObserver(update);
 		ro.observe(containerRef.current as Element);
 		return () => ro.disconnect();
-	}, [phase]);
+	}, [phase, orientation]); // Re-run when orientation changes
 
 	// Loop Timing
 	useEffect(() => {
