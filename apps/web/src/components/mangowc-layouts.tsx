@@ -1,33 +1,58 @@
 "use client";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ScrollerLayout } from "./layouts/scroller-layout";
 import { TileLayout } from "./layouts/tile-layout";
 import { GridLayout } from "./layouts/grid-layout";
+import { OverviewLayout } from "./layouts/overview-layout";
+import { CenterTileLayout } from "./layouts/center-tile-layout";
+import { MonocleLayout } from "./layouts/monocle-layout";
+import { DeckLayout } from "./layouts/deck-layout";
+import { RightTileLayout } from "./layouts/right-tile-layout";
 
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
 export function MangowcLayouts() {
 	const [activeLayout, setActiveLayout] = useState<
-		"tiling" | "scroller" | "grid"
+		| "tiling"
+		| "scroller"
+		| "grid"
+		| "overview"
+		| "deck"
+		| "center-tile"
+		| "right-tile"
+		| "monocle"
 	>("tiling");
 	const [orientation, setOrientation] = useState<"horizontal" | "vertical">(
 		"horizontal",
 	);
 
+	const isOtherActive = !["tiling", "scroller", "grid"].includes(activeLayout);
+
+	const formatLabel = (s: string) => {
+		if (s === "center-tile") return "Center Tile";
+		if (s === "right-tile") return "Right Tile";
+		return s.charAt(0).toUpperCase() + s.slice(1);
+	};
+
+	const dropdownLabel = isOtherActive ? formatLabel(activeLayout) : "Others";
+
 	return (
 		<div className="mx-auto w-full max-w-4xl space-y-4 p-4">
 			<div className="flex flex-col items-end gap-2 sm:flex-row sm:justify-end">
-				{/* Layout Selector */}
-				<div className="inline-flex rounded-full border border-border bg-muted p-1">
+				<div className="inline-flex flex-wrap justify-end gap-1 rounded-2xl border border-border bg-muted p-1">
 					<button
 						type="button"
 						onClick={() => setActiveLayout("tiling")}
 						className={cn(
 							"cursor-pointer rounded-full px-4 py-1.5 font-medium text-sm transition-all",
 							activeLayout === "tiling"
-								? "bg-background text-foreground shadow-sm"
+								? "bg-background text-primary shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>
@@ -39,7 +64,7 @@ export function MangowcLayouts() {
 						className={cn(
 							"cursor-pointer rounded-full px-4 py-1.5 font-medium text-sm transition-all",
 							activeLayout === "scroller"
-								? "bg-background text-foreground shadow-sm"
+								? "bg-background text-primary shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>
@@ -51,23 +76,106 @@ export function MangowcLayouts() {
 						className={cn(
 							"cursor-pointer rounded-full px-4 py-1.5 font-medium text-sm transition-all",
 							activeLayout === "grid"
-								? "bg-background text-foreground shadow-sm"
+								? "bg-background text-primary shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>
 						Grid
 					</button>
+
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<button
+								type="button"
+								className={cn(
+									"flex cursor-pointer items-center gap-1 rounded-full px-4 py-1.5 font-medium text-sm transition-all outline-none",
+									isOtherActive
+										? "bg-background text-primary shadow-sm"
+										: "text-muted-foreground hover:text-foreground",
+								)}
+							>
+								{dropdownLabel}
+								<ChevronDown className="h-3 w-3 opacity-50" />
+							</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuItem
+								onClick={() => setActiveLayout("overview")}
+								className="cursor-pointer"
+							>
+								<span
+									className={cn(
+										activeLayout === "overview" && "font-semibold text-primary",
+									)}
+								>
+									Overview
+								</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => setActiveLayout("deck")}
+								className="cursor-pointer"
+							>
+								<span
+									className={cn(
+										activeLayout === "deck" && "font-semibold text-primary",
+									)}
+								>
+									Deck
+								</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => setActiveLayout("center-tile")}
+								className="cursor-pointer"
+							>
+								<span
+									className={cn(
+										activeLayout === "center-tile" && "font-semibold text-primary",
+									)}
+								>
+									Center Tile
+								</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => setActiveLayout("right-tile")}
+								className="cursor-pointer"
+							>
+								<span
+									className={cn(
+										activeLayout === "right-tile" && "font-semibold text-primary",
+									)}
+								>
+									Right Tile
+								</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => setActiveLayout("monocle")}
+								className="cursor-pointer"
+							>
+								<span
+									className={cn(
+										activeLayout === "monocle" && "font-semibold text-primary",
+									)}
+								>
+									Monocle
+								</span>
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
 
-				{/* Orientation Selector */}
-				<div className="inline-flex rounded-full border border-border bg-muted p-1">
+				<div
+					className={cn(
+						"inline-flex rounded-full border border-border bg-muted p-1 transition-opacity",
+						isOtherActive ? "opacity-50 pointer-events-none" : "",
+					)}
+				>
 					<button
 						type="button"
 						onClick={() => setOrientation("horizontal")}
 						className={cn(
 							"cursor-pointer rounded-full px-4 py-1.5 font-medium text-sm transition-all",
-							orientation === "horizontal"
-								? "bg-background text-foreground shadow-sm"
+							orientation === "horizontal" && !isOtherActive
+								? "bg-background text-primary shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>
@@ -78,8 +186,8 @@ export function MangowcLayouts() {
 						onClick={() => setOrientation("vertical")}
 						className={cn(
 							"cursor-pointer rounded-full px-4 py-1.5 font-medium text-sm transition-all",
-							orientation === "vertical"
-								? "bg-background text-foreground shadow-sm"
+							orientation === "vertical" && !isOtherActive
+								? "bg-background text-primary shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>
@@ -94,6 +202,15 @@ export function MangowcLayouts() {
 					<ScrollerLayout orientation={orientation} />
 				)}
 				{activeLayout === "grid" && <GridLayout orientation={orientation} />}
+				{activeLayout === "overview" && <OverviewLayout />}
+				{activeLayout === "deck" && <DeckLayout />}
+				{activeLayout === "center-tile" && (
+					<CenterTileLayout orientation={orientation} />
+				)}
+				{activeLayout === "right-tile" && (
+					<RightTileLayout orientation={orientation} />
+				)}
+				{activeLayout === "monocle" && <MonocleLayout />}
 			</div>
 		</div>
 	);

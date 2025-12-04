@@ -13,9 +13,6 @@ interface ScrollerLayoutProps {
 	orientation: "horizontal" | "vertical";
 }
 
-// ============================================================================
-// 2. SCROLLER LAYOUT
-// ============================================================================
 export function ScrollerLayout({ orientation }: ScrollerLayoutProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const trackRef = useRef<HTMLDivElement>(null);

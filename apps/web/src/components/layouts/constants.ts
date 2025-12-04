@@ -5,10 +5,10 @@ export const TIMINGS = [
 	{ phase: 2, delay: 1500 }, // Spawn 2
 	{ phase: 3, delay: 2500 }, // Spawn 3
 	{ phase: 4, delay: 3500 }, // Swap
-	{ phase: 5, delay: 5000 }, // Expand
-	{ phase: 6, delay: 6500 }, // Despawn 3
-	{ phase: 7, delay: 7500 }, // Despawn 2
-	{ phase: 8, delay: 8500 }, // Despawn 1
+	{ phase: 5, delay: 4500}, // Expand
+	{ phase: 6, delay: 5500 }, // Despawn 3
+	{ phase: 7, delay: 6500 }, // Despawn 2
+	{ phase: 8, delay: 7500 }, // Despawn 1
 ];
 export const TOTAL_DURATION = 9500;
 

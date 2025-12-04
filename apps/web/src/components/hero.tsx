@@ -5,49 +5,65 @@ import { MangowcLayouts } from "@/components/mangowc-layouts";
 
 export function Hero() {
 	return (
-		<section className="relative flex min-h-screen items-center overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
-			{/* Background grid effect */}
+		<section className="relative flex items-center justify-center overflow-hidden px-4 py-20 sm:px-6 lg:px-10 min-h-[85vh]">
+			{/* Background grid */}
 			<div className="grid-bg pointer-events-none absolute inset-0 bg-[size:4rem_4rem]" />
 
-			<div className="relative z-10 flex w-full max-w-7xl mx-auto items-center gap-8">
-				<div className="flex-1 text-center">
-					<div className="mb-6 inline-block">
-						<span className="font-mono font-semibold text-primary text-sm">
+			{/* Gradient fade */}
+			<div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+
+			<div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-14 lg:flex-row lg:items-center lg:gap-20">
+				
+				{/* Left Column */}
+				<div className="flex-1 text-center lg:text-left">
+					<div className="mb-5 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1">
+						<span className="font-mono text-xs sm:text-sm font-semibold text-primary">
 							Wayland Compositor
 						</span>
 					</div>
 
-					<h1 className="mb-6 text-balance font-bold text-5xl text-foreground leading-tight sm:text-6xl lg:text-7xl">
+					<h1 className="mb-6 text-4xl font-bold leading-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl text-balance">
 						Lightweight, <span className="text-primary">Feature-Rich</span>
 					</h1>
 
-					<p className="mx-auto mb-12 max-w-2xl text-balance text-foreground/70 text-lg sm:text-xl">
-						MangoWC is a lightweight, high-performance Wayland compositor built
-						on dwl, designed for speed, flexibility, and a modern, customizable
-						desktop experience.
+					<p className="mx-auto mb-10 max-w-xl text-base text-muted-foreground sm:text-lg md:text-xl lg:mx-0 text-balance">
+						MangoWC is a modern, lightweight, high-performance Wayland compositor 
+						built on dwl — crafted for speed, flexibility, and a customizable desktop
+						experience.
 					</p>
 
-					<div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row">
+					{/* PERFECT button layout */}
+					<div className="
+						flex flex-col gap-4
+						items-center
+						sm:flex-row sm:justify-center
+						lg:justify-start
+					">
 						<Link
 							href="https://github.com/DreamMaoMao/mangowc"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+							className="rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.04] hover:opacity-90"
 						>
 							View on GitHub
 						</Link>
+
 						<Link
 							href="https://discord.gg/CPjbDxesh5"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="rounded-full border border-border px-8 py-3 font-semibold text-foreground transition-colors hover:bg-card"
+							className="rounded-full border border-border bg-background/60 px-8 py-3 font-semibold text-foreground backdrop-blur-md transition-colors hover:bg-accent hover:text-accent-foreground"
 						>
 							Join Discord
 						</Link>
 					</div>
 				</div>
-				<div className="flex-1 flex justify-center">
-					<MangowcLayouts />
+
+				{/* Right Column */}
+				<div className="flex-1 w-full lg:max-w-[55%]">
+					<div className="w-full">
+						<MangowcLayouts />
+					</div>
 				</div>
 			</div>
 		</section>

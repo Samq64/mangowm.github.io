@@ -9,11 +9,11 @@ import {
 	TOTAL_DURATION,
 } from "./constants";
 
-interface TileLayoutProps {
+interface RightTileLayoutProps {
 	orientation: "horizontal" | "vertical";
 }
 
-export function TileLayout({ orientation }: TileLayoutProps) {
+export function RightTileLayout({ orientation }: RightTileLayoutProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const r1 = useRef<HTMLDivElement>(null);
 	const r2 = useRef<HTMLDivElement>(null);
@@ -39,13 +39,13 @@ export function TileLayout({ orientation }: TileLayoutProps) {
 			const height = containerRef.current.clientHeight;
 			const gap = 16;
 
-			// Horizontal Calculations (Master Left, Stack Right)
+			// Horizontal Calculations (Master Right, Stack Left)
 			const h_halfW = (width - gap) / 2;
 			const h_halfH = (height - gap) / 2;
 			const h_rightX = h_halfW + gap;
 			const h_bottomY = h_halfH + gap;
 
-			// Vertical Calculations (Master Top, Stack Bottom)
+			// Vertical Calculations (Master Bottom, Stack Top)
 			const v_halfW = (width - gap) / 2;
 			const v_halfH = (height - gap) / 2;
 			const v_rightX = v_halfW + gap;
@@ -105,43 +105,48 @@ export function TileLayout({ orientation }: TileLayoutProps) {
 			// --- Calculate Rects based on Orientation ---
 			
 			// Define standard positions (Normal State)
-			// Pos 0: Master
+			// Pos 0: Master (Right/Bottom)
 			// Pos 1: Stack 1 (Top/Left)
-			// Pos 2: Stack 2 (Bottom/Right)
+			// Pos 2: Stack 2 (Bottom/Right of Stack area)
 			let pos0, pos1, pos2;
 
 			if (isVert) {
-				// Vertical: Master Top
+				// Vertical: Master Bottom
 				if (activeWindows === 1) {
 					pos0 = { x: 0, y: 0, w: width, h: height };
 				} else if (activeWindows === 2) {
-					pos0 = { x: 0, y: 0, w: width, h: v_halfH };
-					pos1 = { x: 0, y: v_bottomY, w: width, h: v_halfH };
+					// Master Bottom, Stack Top
+					pos0 = { x: 0, y: v_bottomY, w: width, h: v_halfH };
+					pos1 = { x: 0, y: 0, w: width, h: v_halfH };
 				} else {
-					pos0 = { x: 0, y: 0, w: width, h: v_halfH };
-					pos1 = { x: 0, y: v_bottomY, w: v_halfW, h: v_halfH };
-					pos2 = { x: v_rightX, y: v_bottomY, w: v_halfW, h: v_halfH };
+					// Master Bottom
+					pos0 = { x: 0, y: v_bottomY, w: width, h: v_halfH };
+					// Stack Top (Split Left/Right)
+					pos1 = { x: 0, y: 0, w: v_halfW, h: v_halfH };
+					pos2 = { x: v_rightX, y: 0, w: v_halfW, h: v_halfH };
 				}
 			} else {
-				// Horizontal: Master Left
+				// Horizontal: Master Right
 				if (activeWindows === 1) {
 					pos0 = { x: 0, y: 0, w: width, h: height };
 				} else if (activeWindows === 2) {
-					pos0 = { x: 0, y: 0, w: h_halfW, h: height };
-					pos1 = { x: h_rightX, y: 0, w: h_halfW, h: height };
+					// Master Right, Stack Left
+					pos0 = { x: h_rightX, y: 0, w: h_halfW, h: height };
+					pos1 = { x: 0, y: 0, w: h_halfW, h: height };
 				} else {
-					pos0 = { x: 0, y: 0, w: h_halfW, h: height };
-					pos1 = { x: h_rightX, y: 0, w: h_halfW, h: h_halfH };
-					pos2 = { x: h_rightX, y: h_bottomY, w: h_halfW, h: h_halfH };
+					// Master Right
+					pos0 = { x: h_rightX, y: 0, w: h_halfW, h: height };
+					// Stack Left (Split Top/Bottom)
+					pos1 = { x: 0, y: 0, w: h_halfW, h: h_halfH };
+					pos2 = { x: 0, y: h_bottomY, w: h_halfW, h: h_halfH };
 				}
 			}
 
 			// --- Apply to Windows ---
 
-			// Window 1
-			// Normal: pos0 (Master)
-			// Swap: pos2 (Stack Bottom/Right) - Swaps with 3
+			// Window 1 (Master)
 			let target1 = pos0;
+			// Swap with Stack 2 (pos2)
 			if (isSwap && activeWindows === 3) target1 = pos2;
 			
 			set(
@@ -150,31 +155,25 @@ export function TileLayout({ orientation }: TileLayoutProps) {
 				focusedWindow === 1
 			);
 
-			// Window 2
-			// Always pos1 (Stack Top/Left) in 3-window layout
-			// In 2-window layout, it's pos1 (Full Stack)
-			// Swap: Stays in pos1
+			// Window 2 (Stack 1)
 			let target2 = pos1;
-			// (No change for swap)
-
 			set(
 				r2.current, target2?.x ?? 0, target2?.y ?? 0, target2?.w ?? 0, target2?.h ?? 0,
 				phase >= 2 && phase < 7,
 				focusedWindow === 2
 			);
 
-			// Window 3
-			// Normal: pos2 (Stack Bottom/Right)
-			// Swap: pos0 (Master)
+			// Window 3 (Stack 2)
 			let target3 = pos2;
+			// Swap with Master (pos0)
 			if (isSwap && activeWindows === 3) target3 = pos0;
 
 			// Pre-position for entry
 			if (activeWindows < 3) {
-				// Just keep it where it would be
+				// Enter from Bottom-Right or appropriate corner
 				target3 = isVert 
-					? { x: v_rightX, y: v_bottomY, w: v_halfW, h: v_halfH }
-					: { x: h_rightX, y: h_bottomY, w: h_halfW, h: h_halfH };
+					? { x: v_rightX, y: 0, w: v_halfW, h: v_halfH }
+					: { x: 0, y: h_bottomY, w: h_halfW, h: h_halfH };
 			}
 
 			set(
