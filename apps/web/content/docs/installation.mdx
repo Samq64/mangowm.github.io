@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Install MangoWC on Arch, Gentoo, NixOS, or build from source.
+description: Install MangoWC on Arch, Gentoo, NixOS, PikaOS, Fedora, or build from source.
 ---
 
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
@@ -35,7 +35,7 @@ Regardless of your installation method, MangoWC requires a Wayland-capable envir
 
 Choose your distribution below for specific installation instructions.
 
-<Tabs items={['Arch Linux', 'Gentoo', 'NixOS', 'Manual Build']}>
+<Tabs items={['Arch Linux', 'Gentoo', 'NixOS', 'PikaOS', 'Fedora', 'Manual Build']}>
 
 <Tab value="Arch Linux">
   MangoWC is available in the **Arch User Repository (AUR)**.
@@ -111,6 +111,30 @@ The repository provides a Flake with a NixOS module and a Home Manager module.
 }
 ```
 
+</Tab>
+
+<Tab value="PikaOS">
+MangoWC is available in the **PikaOS package repository**.
+
+You can install it using the `pikman` package manager:
+
+```bash
+pikman install mangowc
+```
+</Tab>
+
+<Tab value="Fedora">
+The package is in the third-party **Terra repository**. First, add the Terra Repository.
+
+```bash
+dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+```
+
+Then, install the package:
+
+```bash
+dnf install mangowc
+```
 </Tab>
 
 <Tab value="Manual Build">
