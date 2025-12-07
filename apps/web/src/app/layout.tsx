@@ -57,7 +57,7 @@ const jsonLdOrganization = {
 export const metadata = createMetadata({
 	title: {
 		template: "%s | MangoWC",
-		default: "MangoWC",
+		default: SITE_DESCRIPTION,
 	},
 	description: SITE_DESCRIPTION,
 	openGraph: {
