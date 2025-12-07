@@ -11,6 +11,7 @@ import { notFound } from "next/navigation";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import { LLMCopyButton, ViewOptions } from "@/components/page-actions";
+import { getPageImage } from "@/lib/metadata";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 	const params = await props.params;
@@ -81,7 +82,7 @@ export async function generateMetadata(
 
 	const baseUrl = "https://mangowc.vercel.app";
 	const pathname = `/docs/${params.slug?.join("/") || ""}`;
-	const ogImage = `/og/${params.slug?.join("/") || "index"}`;
+	const ogImage = getPageImage(page).url;
 
 	return {
 		title: page.data.title,
