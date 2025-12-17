@@ -12,6 +12,10 @@ export function createMetadata(override: Metadata): Metadata {
 			"dwl",
 			"linux",
 			"lightweight wm",
+			"wlroots",
+			"scenefx",
+			"tiling window manager",
+			"dynamic tiling",
 		],
 		icons: {
 			icon: "/favicon.ico",
@@ -77,5 +81,5 @@ export const SITE_DESCRIPTION =
 export const baseUrl =
 	process.env.NODE_ENV === "development" ||
 	!process.env.VERCEL_PROJECT_PRODUCTION_URL
-		? new URL("http://localhost:3000")
+		? new URL("http://localhost:3001")
 		: new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
