@@ -52,7 +52,6 @@ export function createMetadata(override: Metadata): Metadata {
 			...override.twitter,
 		},
 		alternates: {
-			canonical: "https://mangowc.vercel.app",
 			types: {
 				"application/rss+xml": [
 					{

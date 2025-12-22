@@ -7,7 +7,9 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 		<RootProvider
 			search={{
 				enabled: true,
-				hotKey: [{ display: "Ctrl + K", key: (e) => e.ctrlKey && e.key === "k" }],
+				hotKey: [
+					{ display: "Ctrl + K", key: (e) => e.ctrlKey && e.key === "k" },
+				],
 			}}
 		>
 			{children}

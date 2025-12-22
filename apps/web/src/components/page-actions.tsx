@@ -1,15 +1,15 @@
 "use client";
-import { useMemo, useState } from "react";
-import { Check, ChevronDown, Copy, ExternalLinkIcon } from "lucide-react";
-import { cn } from "../lib/cn";
-import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
-import { buttonVariants } from "./ui/button";
+import { cva } from "class-variance-authority";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "fumadocs-ui/components/ui/popover";
-import { cva } from "class-variance-authority";
+import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
+import { Check, ChevronDown, Copy, ExternalLinkIcon } from "lucide-react";
+import { useMemo, useState } from "react";
+import { cn } from "../lib/cn";
+import { buttonVariants } from "./ui/button";
 
 const cache = new Map<string, string>();
 
@@ -63,7 +63,7 @@ export function LLMCopyButton({
 }
 
 const optionVariants = cva(
-	"text-sm p-2 rounded-lg inline-flex items-center gap-2 hover:text-fd-accent-foreground hover:bg-fd-accent [&_svg]:size-4",
+	"inline-flex items-center gap-2 rounded-lg p-2 text-sm hover:bg-fd-accent hover:text-fd-accent-foreground [&_svg]:size-4",
 );
 
 export function ViewOptions({
@@ -161,7 +161,7 @@ export function ViewOptions({
 					>
 						{item.icon}
 						{item.title}
-						<ExternalLinkIcon className="text-fd-muted-foreground size-3.5 ms-auto" />
+						<ExternalLinkIcon className="ms-auto size-3.5 text-fd-muted-foreground" />
 					</a>
 				))}
 			</PopoverContent>

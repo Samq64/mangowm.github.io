@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
+import { baseUrl } from "@/lib/metadata";
 
 export default function robots(): MetadataRoute.Robots {
-	const baseUrl = "https://mangowc.vercel.app";
-
 	return {
 		rules: {
 			userAgent: "*",

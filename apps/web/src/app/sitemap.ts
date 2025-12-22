@@ -1,9 +1,8 @@
 import type { MetadataRoute } from "next";
+import { baseUrl } from "@/lib/metadata";
 import { source } from "@/lib/source";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-	const baseUrl = "https://mangowc.vercel.app";
-
 	const docsPages = source.getPages().map((page) => ({
 		url: `${baseUrl}/docs/${page.slugs.join("/")}`,
 		lastModified: new Date(),

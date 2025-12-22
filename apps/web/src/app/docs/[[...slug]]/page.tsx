@@ -8,15 +8,15 @@ import {
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { source } from "@/lib/source";
-import { getMDXComponents } from "@/mdx-components";
 import { LLMCopyButton, ViewOptions } from "@/components/page-actions";
 import {
+	baseUrl,
 	createMetadata,
 	getPageImage,
-	baseUrl,
 	SITE_DESCRIPTION,
 } from "@/lib/metadata";
+import { source } from "@/lib/source";
+import { getMDXComponents } from "@/mdx-components";
 
 export const revalidate = false;
 
@@ -64,14 +64,14 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 				<DocsDescription className="mb-2">
 					{page.data.description}
 				</DocsDescription>
-				<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-8">
+				<div className="flex flex-row flex-wrap items-center gap-2 border-b pb-8">
 					<LLMCopyButton markdownUrl={`${page.url}.mdx`} />
 					<ViewOptions
 						markdownUrl={`${page.url}.mdx`}
 						githubUrl={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}`}
 					/>
 				</div>
-				<div className="prose flex-1 text-fd-foreground/90 prose-no-margin">
+				<div className="prose prose-no-margin flex-1 text-fd-foreground/90">
 					<MDX
 						components={getMDXComponents({
 							// this allows you to link to other pages with relative file paths
@@ -109,6 +109,9 @@ export async function generateMetadata(
 	return createMetadata({
 		title: page.data.title,
 		description,
+		alternates: {
+			canonical: `/docs/${page.slugs.join("/")}`,
+		},
 		openGraph: {
 			url: `/docs/${page.slugs.join("/")}`,
 			images: [image],
