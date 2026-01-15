@@ -93,6 +93,7 @@ You can set scale like this, such as 1.4 factor.
 Dependencies:
 ```bash
 yay -S xorg-xrdb
+yay -S xwayland-satellite
 ```
 
 In config file:
@@ -114,3 +115,23 @@ Edit autostart:
 # scale 1.4 for xwayland
 sleep 0.5s && echo "Xft.dpi: 140" | xrdb -merge
 ```
+
+### Using xwayland-satellite to Prevent Blurry XWayland Apps
+
+If you use fractional scaling, you can use `xwayland-satellite` to automatically scale XWayland apps to prevent them from being blurry, for example with a scale of 1.4:
+
+Dependencies:
+```bash
+yay -S xwayland-satellite
+```
+
+In config file:
+```
+env = DISPLAY,:2
+exec = xwayland-satellite :2
+monitorrule=eDP-1,0.55,1,tile,0,1.4,0,0,1920,1080,60
+```
+
+<Callout type="warn">
+Use a `DISPLAY` other than `1` to avoid conflicting with MangoWC.
+</Callout>
